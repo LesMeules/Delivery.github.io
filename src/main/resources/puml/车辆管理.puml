@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor 公司管理员
+participant Login
+participant CarManage
+participant DB
+
+公司管理员->Login :登录()
+activate 公司管理员
+activate Login
+Login->CarManage  : 管理车辆操作()
+activate CarManage
+CarManage->DB :对数据库操作()
+activate DB
+CarManage<-DB :返回信息()
+activate CarManage
+deactivate
+deactivate
+deactivate
+deactivate
+deactivate 公司管理员
+@enduml

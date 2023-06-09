@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.nuc.ssm.entity.Goods">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="goodsname" jdbcType="VARCHAR" property="goodsname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cid, goods_type, goodsname
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 统计商品的数量 -->
+   <select id="count"  resultType="java.lang.Integer">
+    select 
+    	count(*)
+    from goods
+    where goodsname like concat("%",#{goodsname},"%")
+  </select>
+  <!-- 列出所有的商品，带分页 -->
+    <select id="listWidthPage"  resultMap="BaseResultMap">
+    select 
+    	<include refid="Base_Column_List"></include>
+    from goods
+    where goodsname like concat("%",#{goodsname},"%")
+    limit #{start},#{offset}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.nuc.ssm.entity.Goods">
+    insert into goods (id, cid, goods_type, 
+      goodsname)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{goodsType,jdbcType=VARCHAR}, 
+      #{goodsname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.nuc.ssm.entity.Goods">
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="goodsType != null">
+        goods_type,
+      </if>
+      <if test="goodsname != null">
+        goodsname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null">
+        #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsname != null">
+        #{goodsname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.nuc.ssm.entity.Goods">
+    update goods
+    <set>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null">
+        goods_type = #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsname != null">
+        goodsname = #{goodsname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.nuc.ssm.entity.Goods">
+    update goods
+    set cid = #{cid,jdbcType=INTEGER},
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      goodsname = #{goodsname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

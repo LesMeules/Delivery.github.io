@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.BankMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.nuc.ssm.entity.Bank">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="Cid" jdbcType="INTEGER" property="cid" />
+    <result column="bankname" jdbcType="VARCHAR" property="bankname" />
+    <result column="banknumber" jdbcType="VARCHAR" property="banknumber" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, Cid, bankname, banknumber
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectbycid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bank
+    where Cid = #{cid,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectBankCount" resultType="Integer">
+    select 
+    count(id)
+    from bank
+  </select>
+  <select id="selectPageBank" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bank
+    limit #{start},#{offset}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.nuc.ssm.entity.Bank">
+    insert into bank ( Cid, bankname, 
+      banknumber)
+    values ( #{cid,jdbcType=INTEGER}, #{bankname,jdbcType=VARCHAR}, 
+      #{banknumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.nuc.ssm.entity.Bank">
+    insert into bank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bankname != null">
+        bankname,
+      </if>
+      <if test="banknumber != null">
+        banknumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bankname != null">
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="banknumber != null">
+        #{banknumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.nuc.ssm.entity.Bank">
+    update bank
+    <set>
+      <if test="bankname != null">
+        bankname = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="banknumber != null">
+        banknumber = #{banknumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.nuc.ssm.entity.Bank">
+    update bank
+    set Cid = #{cid,jdbcType=INTEGER},
+      bankname = #{bankname,jdbcType=VARCHAR},
+      banknumber = #{banknumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

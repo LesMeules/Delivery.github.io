@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.AreaMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.nuc.ssm.entity.Area">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="ParentId" jdbcType="INTEGER" property="parentid" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, area_name, ParentId, level
+  </sql>
+  <select id="findByAid" parameterType="java.lang.Integer" resultType="cn.edu.nuc.ssm.entity.Area">
+    select 
+    <include refid="Base_Column_List" />
+    from area
+    where ParentId<![CDATA[<]]>0
+      <if test="areaName!= null and areaName!= '' ">
+      and area_name	LIKE CONCAT(CONCAT('%', #{areaName}), '%')
+      </if>
+    limit #{start},#{offset}
+  </select>
+   
+   <select id="count"  resultType="java.lang.Integer">
+    select 
+       count(*)
+    from area
+    where ParentId <![CDATA[<]]> 0 
+      <if test="areaName!= null and areaName!= '' ">
+      and area_name	LIKE CONCAT(CONCAT('%', #{areaName}), '%')
+      </if>
+  </select>
+  
+   <select id="sublist"  resultType="cn.edu.nuc.ssm.entity.Area">
+    select 
+    <include refid="Base_Column_List" />
+    from area
+    where parentId=#{aid} 
+  </select>
+  <select id="listAll"  resultType="cn.edu.nuc.ssm.entity.Area">
+    select 
+    <include refid="Base_Column_List" />
+    from area
+  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from area
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from area
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+   <delete id="deleteByParentId" parameterType="java.lang.Integer">
+	    delete from area
+	    where parentId = #{parentid,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="cn.edu.nuc.ssm.entity.Area">
+    insert into area (id, area_name, ParentId, 
+      level)
+    values (#{id,jdbcType=INTEGER}, #{areaName,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{level,jdbcType=VARCHAR})
+  </insert>
+   <insert id="savepro" parameterType="cn.edu.nuc.ssm.entity.Area">
+    insert into area ( area_name, ParentId, 
+      level)
+    values ( #{areaName,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{level,jdbcType=VARCHAR})
+  </insert>
+    <insert id="savecity" parameterType="cn.edu.nuc.ssm.entity.Area">
+    insert into area ( area_name, ParentId, 
+      level)
+    values ( #{areaName,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{level,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="cn.edu.nuc.ssm.entity.Area">
+    insert into area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="areaName != null">
+        area_name,
+      </if>
+      <if test="parentid != null">
+        ParentId,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="areaName != null">
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.nuc.ssm.entity.Area">
+    update area
+    <set>
+      <if test="areaName != null">
+        area_name = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        ParentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.nuc.ssm.entity.Area">
+    update area
+    set area_name = #{areaName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

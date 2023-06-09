@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor 公司管理员
+participant Login
+participant Employee
+participant DB
+
+公司管理员->Login :登录()
+activate 公司管理员
+activate Login
+Login->Employee  : 管理员工信息()
+activate Employee
+Employee->DB :改变数据库()
+activate DB
+Employee<-DB :返回页面信息()
+activate Employee
+deactivate
+deactivate
+deactivate
+deactivate
+deactivate 公司管理员
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+title 时序图
+actor 门户站
+participant Login
+participant Delivery
+participant Car
+participant Employee
+participant DB
+
+门户站 -> Login :登录()
+activate Login
+
+Login -> Delivery: 生成交接单()
+activate Delivery
+Delivery -> DB : 改变交接单()
+activate DB
+deactivate DB
+deactivate Delivery
+
+Login -> Delivery: 查看交接单()
+activate Delivery
+Delivery ->DB: 查询()
+activate DB
+Delivery <-DB:返回交接单情况()
+activate Delivery
+deactivate Delivery
+deactivate DB
+deactivate Delivery
+
+ Login -> Delivery: 选择交接单()
+ activate Delivery
+Delivery ->Car:选择()
+ activate Car
+Car->DB:改变车辆状态()
+activate DB
+
+Car->Employee:选择()
+deactivate DB
+activate Employee
+Employee->DB :改变员工状态（）
+activate DB
+deactivate DB
+deactivate Employee
+deactivate Car
+deactivate Delivery
+deactivate Login
+门户站 ->Car :选择发货车辆()
+activate Car
+Car->Car :发车()
+activate Car
+deactivate Car
+deactivate Car
+@enduml

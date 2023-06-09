@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.LogisticsLogMapper">
+<!--    <resultMap id="base" type="logisticsLog">
+        <id column="id" property="id"/>
+        <result column="l_number" property="number"/>
+        <result column="info" property="info"/>
+        <result column="address" property="address"/>
+        <result column="time" property="time"/>
+    </resultMap>-->
+
+    <insert id="insert">
+        insert into logistics_log (id, l_number, info, time)
+        values (#{id}, #{lNumber}, #{info}, #{time});
+    </insert>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM logistics_log
+        WHERE l_number like concat('%', #{lNumber}, '%')
+    </select>
+    <select id="listWithPage" resultType="cn.edu.nuc.ssm.entity.LogisticsLog">
+        SELECT id, l_number, info, address, time
+        from logistics_log
+        where l_number like concat("%", #{lNumber}, "%")
+        ORDER BY time DESC
+        limit #{start},#{offset}
+    </select>
+
+</mapper>

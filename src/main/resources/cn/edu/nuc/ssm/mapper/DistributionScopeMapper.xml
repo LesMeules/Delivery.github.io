@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.DistributionScopeMapper">
+
+
+    <select id="listwithpage" resultType="cn.edu.nuc.ssm.entity.TDistributionScope">
+        SELECT t2.distributionSiteName, t.distributionScopeName, t.firstWeight, t.secondWeight
+        from t_distribution_scope t
+                 inner JOIN t_distribution_site t2
+        where t.distributionSiteId = t2.distributionSiteId
+          and t2.distributionSiteName like concat('%', #{distributionSiteName}, '%')
+        limit #{start},#{offset}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select COUNT(*)
+        from t_distribution_scope
+        where distributionScopeName like concat('%', #{distributionScopeName}, '%')
+    </select>
+
+</mapper>

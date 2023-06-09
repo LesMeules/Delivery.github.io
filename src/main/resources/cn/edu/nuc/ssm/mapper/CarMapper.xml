@@ -1,0 +1,110 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.CarMapper">
+    <!--  <resultMap id="BaseResultMap" type="Car">-->
+    <!--    <id column="carId" jdbcType="INTEGER" property="id" />-->
+    <!--    <result column="buytime" jdbcType="INTEGER" property="cid" />-->
+    <!--    <result column="manufacturer" jdbcType="VARCHAR" property="carName" />-->
+    <!--    <result column="carType" jdbcType="INTEGER" property="busload" />-->
+    <!--  </resultMap>-->
+    <sql id="Base_Column_List">
+    carId, buytime, manufacturer, carType,aLoadWeight,loadWeight,nowStatus,carOwner
+  </sql>
+
+    <!-- 统计车辆的信息 -->
+    <select id="count" resultType="java.lang.Integer">
+	    select 
+	    	count(*)
+	    from t_car
+	    where carOwner like concat("%",#{carOwner},"%")
+  </select>
+
+    <select id="listWithPage" resultType="TCar">
+        select
+        <include refid="Base_Column_List"/>
+        from t_car
+        where carOwner like concat("%",#{carOwner},"%")
+        limit #{start},#{offset}
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="String" resultType="TCar">
+        select
+        <include refid="Base_Column_List"/>
+        from t_car
+        where carId = #{id}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="String">
+    delete from t_car
+    where carId = #{id}
+  </delete>
+    <insert id="insert" parameterType="TCar">
+        insert into t_car
+        (carId, buytime, manufacturer, carTypenowStatus,carOwner)
+        values (#{carId}, #{buytime}, #{manufacturer}, #{carType},#{carOwner},  #{nowStatus})
+    </insert>
+    <insert id="insertSelective" parameterType="TCar">
+        insert into t_car
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="cid != null">
+                cid,
+            </if>
+            <if test="carName != null">
+                car_name,
+            </if>
+            <if test="busload != null">
+                busload,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="cid != null">
+                #{cid,jdbcType=INTEGER},
+            </if>
+            <if test="carName != null">
+                #{carName,jdbcType=VARCHAR},
+            </if>
+            <if test="busload != null">
+                #{busload,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.edu.nuc.ssm.entity.TCar">
+        update t_car
+        <set>
+            <if test="cid != null">
+                cid = #{cid,jdbcType=INTEGER},
+            </if>
+            <if test="carName != null">
+                car_name = #{carName,jdbcType=VARCHAR},
+            </if>
+            <if test="busload != null">
+                busload = #{busload,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.edu.nuc.ssm.entity.TCar">
+    update t_car
+    set
+      buytime = #{buytime},
+      manufacturer = #{manufacturer},
+      carType = #{carType},
+      aLoadWeight = #{aLoadWeight},
+      loadWeight = #{loadWeight},
+      nowStatus = #{nowStatus},
+      carOwner = #{carOwner}
+    where carId = #{carId}
+  </update>
+
+    <update id="updateNowStatus">
+        update t_car set nowStatus = 1 where carOwner=#{usertruename};
+    </update>
+
+</mapper>

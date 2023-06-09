@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor 配送员
+participant Login
+participant Order
+participant DB
+
+配送员->Login :登录()
+activate 配送员
+activate Login
+Login->Order  : 操作订单()
+activate Order
+Order->DB :改变订单表数据()
+activate DB
+Order<-DB :返回更新后的订单信息()
+activate Order
+deactivate
+deactivate
+deactivate
+deactivate
+deactivate 配送员
+@enduml

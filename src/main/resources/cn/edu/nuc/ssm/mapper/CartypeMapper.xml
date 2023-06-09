@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuc.ssm.dao.CartypeMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.nuc.ssm.entity.Cartype">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="car_type" jdbcType="VARCHAR" property="carType" />
+    <result column="load_type" jdbcType="VARCHAR" property="loadType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, car_type, load_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cartype
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 列出所有的车型  -->
+  <select id="listAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cartype
+  </select>
+  
+ <select id="count"  resultType="java.lang.Integer">
+   select 
+   	count(*)
+    from cartype
+    <if test="carType!= null and carType!= '' ">
+      where car_type LIKE CONCAT(CONCAT('%', #{carType}), '%')
+    </if>
+  </select>
+  
+  <select id="findByCidPage"  resultType="cn.edu.nuc.ssm.entity.Cartype">
+    select 
+    <include refid="Base_Column_List" />
+    from cartype
+  	<if test="carType!= null and carType!= '' ">
+      where car_type LIKE CONCAT(CONCAT('%', #{carType}), '%')
+    </if>
+    limit #{start},#{offset}
+  </select>
+  
+   <select id="findByCid"  resultType="cn.edu.nuc.ssm.entity.Cartype">
+    select 
+    <include refid="Base_Column_List" />
+    from cartype
+  	where id = #{id}
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cartype
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.nuc.ssm.entity.Cartype">
+    insert into cartype (id, car_type, load_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{carType,jdbcType=VARCHAR}, #{loadType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.nuc.ssm.entity.Cartype">
+    insert into cartype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="carType != null">
+        car_type,
+      </if>
+      <if test="loadType != null">
+        load_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="carType != null">
+        #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="loadType != null">
+        #{loadType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.nuc.ssm.entity.Cartype">
+    update cartype
+    <set>
+      <if test="carType != null">
+        car_type = #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="loadType != null">
+        load_type = #{loadType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.nuc.ssm.entity.Cartype">
+    update cartype
+    set car_type = #{carType,jdbcType=VARCHAR},
+      load_type = #{loadType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
